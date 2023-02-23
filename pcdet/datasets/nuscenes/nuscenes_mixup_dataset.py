@@ -7,7 +7,7 @@ from tqdm import tqdm
 
 from ...ops.roiaware_pool3d import roiaware_pool3d_utils
 from ...utils import common_utils
-from ..processor.intra_domain_point_mixup import intra_domain_point_mixup
+from ..processor.intra_domain_point_mixup import intra_domain_point_mixup, intra_domain_point_mixup_cd
 from ..dataset import DatasetTemplate
 
 class NuScenesMixUpDataset(DatasetTemplate):
@@ -394,7 +394,11 @@ class NuScenesMixUpDataset(DatasetTemplate):
         # elif self.dataset_cfg.MIX_TYPE == 'cutmix':
         #     new_data_dicts = random_patch_replacement(data_dict_1, data_dict_2, self.point_cloud_range)
         #     new_data_dict = new_data_dicts[1]
-        data_dict = intra_domain_point_mixup(data_dict_1, data_dict_2, alpha=self.dataset_cfg.ALPHA)
+        if self.dataset_cfg.get('COLLISION_DETECTION', False):
+            data_dict = intra_domain_point_mixup_cd(data_dict_1, data_dict_2, alpha=self.dataset_cfg.ALPHA)
+        else:
+            data_dict = intra_domain_point_mixup(data_dict_1, data_dict_2, alpha=self.dataset_cfg.ALPHA)
+
 
         if len(data_dict['gt_boxes'].shape) != 2:
             new_index = np.random.randint(self.__len__())
