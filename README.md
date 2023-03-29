@@ -11,10 +11,10 @@ only a few labeled target data is available, yet can significantly improve the a
 
 Our experiments are conducted on two widely used datasets: Waymo with 64-beam LiDAR and nuScenes with 32-beam LiDAR. We adapt from Waymo to nuScenes, i.e., 100% Waymo annotations together with partial nuScenes annotations are used. In particular, we uniformly downsample the nuScenes training samples into 1%, 5%, 10% and 20% (resulting in 282, 1407, 2813 and 5626 frames), and the rest of the samples remain unlabeled.
 
-| Methods | 1% | 5% | 10% | 20% | 
+| Methods | 1% | 5% | 10% | 100% | 
 | ------- | -- | -- | --- | --- |
-| Labeled Target | 37.2 / 38.1 | 61.0 / 53.2 | 65.6 / 58.2 | 70.2 / 63.0 | 
-| Ours    | 73.4 / 67.1 | 76.2 / 68.8 | 78.8 / 70.9 | 78.9 / 71.0 |
+| Labeled Target | 37.2 / 38.1 | 61.0 / 53.2 | 65.6 / 58.2 | 78.4 / 69.9 | 
+| Ours    | 73.4 / 67.1 | 76.2 / 68.8 | 78.8 / 70.9 | 79.8 / 71.8 |
 | Oracle  | 78.4 / 69.9 | 78.4 / 69.9 | 78.4 / 69.9 | 78.4 / 69.9 |
 
 ## **Use SSDA3D**
