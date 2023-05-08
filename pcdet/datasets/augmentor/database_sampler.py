@@ -182,6 +182,10 @@ class DataBaseSampler(object):
                     [-1, self.sampler_cfg.NUM_POINT_FEATURES])
 
             obj_points[:, :3] += info['box3d_lidar'][:3]
+            
+            # shift coordinate
+            if self.sampler_cfg.get('SHIFT_COOR', None):
+                obj_points[:, :3] += np.array(self.sampler_cfg['SHIFT_COOR'], dtype=np.float32)
 
             if self.sampler_cfg.get('USE_ROAD_PLANE', False):
                 # mv height
@@ -228,6 +232,10 @@ class DataBaseSampler(object):
 
                 if self.sampler_cfg.get('DATABASE_WITH_FAKELIDAR', False):
                     sampled_boxes = box_utils.boxes3d_kitti_fakelidar_to_lidar(sampled_boxes)
+                    
+                # shift coordinate
+                if self.sampler_cfg.get('SHIFT_COOR', None):
+                    sampled_boxes[:, 0:3] += np.array(self.sampler_cfg['SHIFT_COOR'], dtype=np.float32)
 
                 iou1 = iou3d_nms_utils.boxes_bev_iou_cpu(sampled_boxes[:, 0:7], existed_boxes[:, 0:7])
                 iou2 = iou3d_nms_utils.boxes_bev_iou_cpu(sampled_boxes[:, 0:7], sampled_boxes[:, 0:7])
