@@ -47,7 +47,7 @@ class WaymoNusCutMixDataset(CutMixDatasetTemplate):
         self.nus_infos.extend(nuscenes_infos)
 
     def get_lidar_with_sweeps(self, index, max_sweeps=1):
-        info = self.nus_infos[index % len(self.nus_infos)]
+        info = self.nus_infos[index]
         lidar_path = self.root_path_target / info['lidar_path']
         points = np.fromfile(str(lidar_path), dtype=np.float32, count=-1).reshape([-1, 5])[:, :4]
 
@@ -267,7 +267,8 @@ class WaymoNusCutMixDataset(CutMixDatasetTemplate):
                 data_dict = self.prepare_ori_data(waymo_input_dict, source=True)
 
             else:
-                nus_info = copy.deepcopy(self.nus_infos[index - len(self.waymo_infos)])
+                index = index - len(self.waymo_infos)
+                nus_info = copy.deepcopy(self.nus_infos[index])
                 nus_points = self.get_lidar_with_sweeps(index, max_sweeps=self.dataset_cfg['NuScenesDataset'].MAX_SWEEPS)
                 if self.dataset_cfg['NuScenesDataset'].get('SHIFT_COOR', None):
                     nus_points[:, 0:3] += np.array(self.dataset_cfg['NuScenesDataset'].SHIFT_COOR, dtype=np.float32)
